@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FavouriteCityCard" rowHeight="76" id="emH-A2-A7m" customClass="FavouriteCityTableCell" customModule="WeatherUpdate" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="76"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="emH-A2-A7m" id="32f-Ce-aLT">
+                <rect key="frame" x="0.0" y="0.0" width="414" height="76"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="pwb-KG-O7R">
+                        <rect key="frame" x="10" y="10" width="394" height="56"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FBX-st-PPP">
+                                <rect key="frame" x="0.0" y="6" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="44" id="2wT-jy-XL8"/>
+                                    <constraint firstAttribute="height" constant="44" id="nfJ-DY-55f"/>
+                                </constraints>
+                                <state key="normal" image="xmark.bin" catalog="system"/>
+                                <connections>
+                                    <action selector="deleteButtonAction:" destination="emH-A2-A7m" eventType="touchDown" id="Qji-zk-T5S"/>
+                                </connections>
+                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="0lG-1C-ITw">
+                                <rect key="frame" x="54" y="5" width="192" height="46"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HIw-8R-MUZ">
+                                        <rect key="frame" x="0.0" y="0.0" width="192" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dAG-FG-Q9p">
+                                        <rect key="frame" x="0.0" y="25.5" width="192" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="width" priority="750" constant="232" id="crv-8D-tPx"/>
+                                </constraints>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="MxV-1z-fTn">
+                                <rect key="frame" x="256" y="6" width="138" height="44"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="8lf-Gi-YRR">
+                                        <rect key="frame" x="0.0" y="1.5" width="44" height="40"/>
+                                        <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="small" weight="light"/>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B2d-dc-4oh">
+                                        <rect key="frame" x="47" y="0.0" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="NYb-bs-syv"/>
+                                            <constraint firstAttribute="width" constant="44" id="P1a-ES-VsG"/>
+                                        </constraints>
+                                        <state key="normal" image="house" catalog="system"/>
+                                        <connections>
+                                            <action selector="setDefaultAction:" destination="emH-A2-A7m" eventType="touchDown" id="USg-MX-APZ"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EWA-gz-JNU">
+                                        <rect key="frame" x="94" y="0.0" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="kNc-dR-OTm"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="pwb-KG-O7R" secondAttribute="trailing" constant="10" id="Bk5-Ln-Jce"/>
+                    <constraint firstItem="pwb-KG-O7R" firstAttribute="leading" secondItem="32f-Ce-aLT" secondAttribute="leading" constant="10" id="QSB-xG-5VW"/>
+                    <constraint firstAttribute="bottom" secondItem="pwb-KG-O7R" secondAttribute="bottom" constant="10" id="Zq3-xn-KsM"/>
+                    <constraint firstItem="pwb-KG-O7R" firstAttribute="top" secondItem="32f-Ce-aLT" secondAttribute="top" constant="10" id="l3O-Ua-fCo"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="deleteButton" destination="FBX-st-PPP" id="7ze-dB-vKa"/>
+                <outlet property="imgCellType" destination="8lf-Gi-YRR" id="SGQ-K9-lAi"/>
+                <outlet property="infoLabel" destination="EWA-gz-JNU" id="xsb-Vg-56O"/>
+                <outlet property="setDefaultButton" destination="B2d-dc-4oh" id="Xtj-ED-ZeE"/>
+                <outlet property="subTitleLabel" destination="dAG-FG-Q9p" id="b6d-0F-XM9"/>
+                <outlet property="titleLabel" destination="HIw-8R-MUZ" id="CcW-AX-LlC"/>
+            </connections>
+            <point key="canvasLocation" x="5.7971014492753632" y="116.51785714285714"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="house" catalog="system" width="128" height="106"/>
+        <image name="star" catalog="system" width="128" height="116"/>
+        <image name="xmark.bin" catalog="system" width="128" height="93"/>
+    </resources>
+</document>

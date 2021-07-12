@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19G2021" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CityMO" representedClassName="CityMO" syncable="YES" codeGenerationType="class">
+        <attribute name="administrativeArea" optional="YES" attributeType="String"/>
+        <attribute name="cityId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="citySubTitle" optional="YES" attributeType="String"/>
+        <attribute name="cityTitle" optional="YES" attributeType="String"/>
+        <attribute name="countryCode" optional="YES" attributeType="String"/>
+        <attribute name="isDefault" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isFavourite" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="cityWeather" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WeatherMO"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="cityId"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="WeatherMO" representedClassName="WeatherMO" syncable="YES" codeGenerationType="class">
+        <attribute name="cityName" optional="YES" attributeType="String"/>
+        <attribute name="feelsLike" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="humidity" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="icon" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="pressure" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="sunrise" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="sunset" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="temp" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="tempMax" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="tempMin" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="visibility" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="weatherDescription" optional="YES" attributeType="String"/>
+        <attribute name="windSpeed" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+    </entity>
+    <elements>
+        <element name="CityMO" positionX="-369.82421875" positionY="-219.02734375" width="128" height="193"/>
+        <element name="WeatherMO" positionX="-63" positionY="36" width="128" height="253"/>
+    </elements>
+</model>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CityNameCard" rowHeight="76" id="rce-u0-mgJ" customClass="CityItemTableCell" customModule="WeatherUpdate" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="64"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rce-u0-mgJ" id="YJ5-WT-jPZ">
+                <rect key="frame" x="0.0" y="0.0" width="414" height="64"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J5P-kV-3B0">
+                        <rect key="frame" x="20" y="10" width="330" height="44"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="ucw-dq-Nbo">
+                        <rect key="frame" x="360" y="21" width="44" height="22"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5jl-uT-YM7">
+                                <rect key="frame" x="0.0" y="0.0" width="44" height="22"/>
+                                <state key="normal" image="star" catalog="system"/>
+                                <connections>
+                                    <action selector="favouriteButtonAction:" destination="rce-u0-mgJ" eventType="touchDown" id="Act-TF-Ae9"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="44" id="37y-wm-oow"/>
+                        </constraints>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="ucw-dq-Nbo" secondAttribute="trailing" constant="10" id="2Qm-Of-Udt"/>
+                    <constraint firstAttribute="bottom" secondItem="J5P-kV-3B0" secondAttribute="bottom" constant="10" id="5uJ-aG-LhJ"/>
+                    <constraint firstItem="J5P-kV-3B0" firstAttribute="top" secondItem="YJ5-WT-jPZ" secondAttribute="top" constant="10" id="6ld-Z8-lLh"/>
+                    <constraint firstItem="ucw-dq-Nbo" firstAttribute="centerY" secondItem="YJ5-WT-jPZ" secondAttribute="centerY" id="8i7-GY-wXu"/>
+                    <constraint firstItem="J5P-kV-3B0" firstAttribute="leading" secondItem="YJ5-WT-jPZ" secondAttribute="leading" constant="20" id="J0n-Ov-V5Y"/>
+                    <constraint firstItem="ucw-dq-Nbo" firstAttribute="leading" secondItem="J5P-kV-3B0" secondAttribute="trailing" constant="10" id="WhO-tM-2sc"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="cityName" destination="J5P-kV-3B0" id="sHF-Mt-yR0"/>
+                <outlet property="favouriteButton" destination="5jl-uT-YM7" id="MsA-V2-ifv"/>
+            </connections>
+            <point key="canvasLocation" x="15.942028985507248" y="-59.598214285714285"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="star" catalog="system" width="128" height="116"/>
+    </resources>
+</document>
