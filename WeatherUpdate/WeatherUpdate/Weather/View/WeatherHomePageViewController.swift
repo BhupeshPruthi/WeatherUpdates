@@ -102,9 +102,7 @@ class WeatherHomePageViewController: UIViewController, LocationSearchViewControl
 
 extension Date {
     static func getHourlyFrom(date: Date) -> String {
-        
         let dateFormatter = DateFormatter()
-        
         dateFormatter.timeStyle = .short
         dateFormatter.dateStyle = .none
         return dateFormatter.string(from: date)
