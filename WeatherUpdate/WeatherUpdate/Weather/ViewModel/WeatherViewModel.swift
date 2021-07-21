@@ -14,16 +14,16 @@ import Foundation
  **/
 
 struct WeatherViewModel {
-    var cityMo : CityMO?
-    var cityModel : CityModel?  //For Fresh city Search, 
+    var cityMo: CityMO?
+    var cityModel: CityModel? // For Fresh city Search, 
     var coreDataShared = CoreDataUtils.sharedUtils
     
-     func getWeatherDataFor(completion: @escaping (CityMO?, ServiceError?) -> ())  {
+     func getWeatherDataFor(completion: @escaping (CityMO?, ServiceError?) -> Void) {
         DispatchQueue.global().async {
             if let cityModel = self.cityModel {
                 let apiHandler = WeatherOneCallAPI()
                 let appConfiguration = URLConfigurationProvider()
-                let param = ["lat" : cityModel.latitude, "lon" : cityModel.longitude, "appid" :appConfiguration.apiKey] as [String : Any]
+                let param = ["lat": cityModel.latitude, "lon": cityModel.longitude, "appid": appConfiguration.apiKey] as [String: Any]
 
                 let sessionManager = SessionManager(apiManager: apiHandler)
                 sessionManager.loadAPIRequest(requestData: param) { (weatherModel, error) in

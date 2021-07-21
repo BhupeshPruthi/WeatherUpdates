@@ -9,10 +9,10 @@ import Foundation
 import UIKit
 import MapKit
 
-//Allow users to select a city from search results
-//Also allow users to make a city favourite dirctly by clicking star icon
+// Allow users to select a city from search results
+// Also allow users to make a city favourite dirctly by clicking star icon
 
-protocol CityItemTableCellDelegate {
+protocol CityItemTableCellDelegate: class {
     func favouriteButtonAction(searchObj: MKLocalSearchCompletion)
 }
 
@@ -21,8 +21,8 @@ class CityItemTableCell: UITableViewCell {
     @IBOutlet weak var cityName: UILabel!
     @IBOutlet weak var favouriteButton: UIButton!
     
-    var localSearchObject : MKLocalSearchCompletion?
-    var delegate: CityItemTableCellDelegate?
+    var localSearchObject: MKLocalSearchCompletion?
+    weak var delegate: CityItemTableCellDelegate?
     
     @IBAction func favouriteButtonAction(_ sender: Any) {
         delegate?.favouriteButtonAction(searchObj: self.localSearchObject!)

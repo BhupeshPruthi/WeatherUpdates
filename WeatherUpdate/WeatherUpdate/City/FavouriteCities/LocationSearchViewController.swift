@@ -21,26 +21,26 @@ import CoreLocation
  5. Tap on any city to see the latest weather info
  6. Set any city as default
  7. Fetch Current location
- **/
+ */
 
-protocol LocationSearchViewControllerDelegate {
+protocol LocationSearchViewControllerDelegate: class {
     func citySelected(cityModel: CityModel)
 }
 
-class LocationSearchViewController: UIViewController , UISearchControllerDelegate {
+class LocationSearchViewController: UIViewController, UISearchControllerDelegate {
    
     @IBOutlet weak var searchBarViewContainer: UIView!
     @IBOutlet weak var citiesTableView: UITableView!
     @IBOutlet weak var editBarButton: UIBarButtonItem!
 
     private let locationManager = CLLocationManager()
-    private var searchResultCities : SearchResultCitiesViewController?
-    private var matchingItems:[MKMapItem] = []
+    private var searchResultCities: SearchResultCitiesViewController?
+    private var matchingItems: [MKMapItem] = []
     private var favouriteCities = [CityMO]()
-    private var citySearchController : UISearchController?
-    private var isEditFavourite : Bool = false
+    private var citySearchController: UISearchController?
+    private var isEditFavourite: Bool = false
     
-    var locationsDelegate : LocationSearchViewControllerDelegate?
+    weak var locationsDelegate: LocationSearchViewControllerDelegate?
 
     override func viewDidLoad() {
         self.citiesTableView.register(UINib(nibName: "GenericMessageCell", bundle: nil), forCellReuseIdentifier: "GenericCard")
@@ -50,14 +50,14 @@ class LocationSearchViewController: UIViewController , UISearchControllerDelegat
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        //by default favourite cities list should be visible
+        // By default favourite cities list should be visible
         self.setUpSearchResultContinainer()
-        self.favouriteCities = CoreDataUtils.sharedUtils.fetchCities(mocType: .MainMOC)
+        self.favouriteCities = CoreDataUtils.sharedUtils.fetchCities(mocType: .mainMOC)
         self.citiesTableView.reloadData()
     }
     
     func setUpSearchResultContinainer() {
-        searchResultCities = storyboard?.instantiateViewController(identifier: "SearchResultCityListVC") as? SearchResultCitiesViewController
+        searchResultCities = storyboard?.instantiateViewController(identifier: "SearchResultCityListVC")
         searchResultCities?.resultCitiesDelegate = self
         citySearchController = UISearchController(searchResultsController: searchResultCities)
         self.setUpSearchBar()
@@ -86,23 +86,23 @@ class LocationSearchViewController: UIViewController , UISearchControllerDelegat
         if self.isEditFavourite {
             self.isEditFavourite = false
             self.editBarButton.title = "Edit"
-            //Save the core data changes only on Done button action
         } else {
             self.isEditFavourite = true
             self.editBarButton.title = "Done"
-            //Reload to show delete and Home button
         }
+        
+        // Save the core data changes only on Done button action
         CoreDataUtils.sharedUtils.saveMainContext()
+        // Reload to show delete and Home button
         self.citiesTableView.reloadData()
     }
 
 }
 
-
-extension LocationSearchViewController : SearchResultCitiesViewControllerDelegate {
+extension LocationSearchViewController: SearchResultCitiesViewControllerDelegate {
     
-    func downloadLocalCityInformationCompleted(cityModel: CityModel) {
-        //If Location Search is root controller , delay as search bar should animate before navigation animation
+    func collectedCityInformationFor(cityModel: CityModel) {
+        // If Location Search is root controller , delay as search bar should animate before navigation animation
         DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.2) {
             if self.navigationController?.viewControllers.count == 1 {
                 let weatherHomePage = self.storyboard?.instantiateViewController(identifier: "WeatherHomePage") as! WeatherHomePageViewController
@@ -117,13 +117,12 @@ extension LocationSearchViewController : SearchResultCitiesViewControllerDelegat
         }
     }
     
-    func cancelSearchBar() {
+    func deactivateSearch() {
         self.citySearchController?.isActive = false
-        self.favouriteCities = CoreDataUtils.sharedUtils.fetchCities(mocType: .MainMOC)
+        self.favouriteCities = CoreDataUtils.sharedUtils.fetchCities(mocType: .mainMOC)
         self.citiesTableView.reloadData()
     }
 }
-
 
 extension LocationSearchViewController: UISearchBarDelegate {
     
@@ -141,15 +140,26 @@ extension LocationSearchViewController: UISearchBarDelegate {
     func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
         var currentLocation: CLLocation!
         
-        if locationManager.authorizationStatus != .denied && locationManager.authorizationStatus != .restricted  {
+        if locationManager.authorizationStatus != .denied && locationManager.authorizationStatus != .restricted {
             currentLocation = locationManager.location
             print("Current Location Coordinates latitude:: \(currentLocation.coordinate.latitude)")
             print("Current Location Coordinates longitude:: \(currentLocation.coordinate.longitude)")
-            let cityModel = CityModel(citySubTitle: "", administrativeArea: "", countryCode: "", cityTitle: "My Location", latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude, id: 0, isFavourite: true, isDefault: false)
-            self.locationsDelegate?.citySelected(cityModel: cityModel)
-            self.navigationController?.popViewController(animated: true)
+            var cityModel = CityModel(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude, id: 0, isFavourite: true, isDefault: false)
+            cityModel.cityTitle = "My Location"
+
+            if self.navigationController?.viewControllers.count == 1 {
+                let weatherHomePage = self.storyboard?.instantiateViewController(identifier: "WeatherHomePage") as! WeatherHomePageViewController
+                var weatherVM = WeatherViewModel()
+                weatherVM.cityModel = cityModel
+                weatherHomePage.weatherVM = weatherVM
+                self.navigationController?.setViewControllers([weatherHomePage], animated: true)
+            } else {
+                
+                self.locationsDelegate?.citySelected(cityModel: cityModel)
+                self.navigationController?.popViewController(animated: true)
+            }
         } else {
-            let alert = UIAlertController(title: "Enable Location" , message: "Location services are not enabled!", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Enable Location", message: "Location services are not enabled!", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
             self.present(alert, animated: true, completion: nil)
 
@@ -157,7 +167,7 @@ extension LocationSearchViewController: UISearchBarDelegate {
     }
 }
 
-extension LocationSearchViewController : UITableViewDelegate , UITableViewDataSource {
+extension LocationSearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return favouriteCities.count > 0 ? favouriteCities.count : 1
     }
@@ -202,15 +212,20 @@ extension LocationSearchViewController : UITableViewDelegate , UITableViewDataSo
         }
         
         let city = favouriteCities[indexPath.row]
-        let cityModel = CityModel(citySubTitle: city.citySubTitle ?? "", administrativeArea: city.administrativeArea ?? "", countryCode: city.countryCode ?? "", cityTitle: city.cityTitle ?? "", latitude: city.latitude, longitude: city.longitude, id: city.cityId, isFavourite: city.isFavourite, isDefault: city.isDefault)
+        var cityModel = CityModel(latitude: city.latitude, longitude: city.longitude, id: city.cityId, isFavourite: city.isFavourite, isDefault: city.isDefault)
+        cityModel.citySubTitle = city.citySubTitle ?? ""
+        cityModel.administrativeArea = city.administrativeArea ?? ""
+        cityModel.countryCode = city.countryCode ?? ""
+        cityModel.cityTitle = city.cityTitle ?? ""
+
         self.locationsDelegate?.citySelected(cityModel: cityModel)
         self.navigationController?.popViewController(animated: true)
     }
 }
 
-extension LocationSearchViewController : FavouriteCityTableCellDelegate {
+extension LocationSearchViewController: FavouriteCityTableCellDelegate {
     func reloadTableView() {
-        self.favouriteCities = CoreDataUtils.sharedUtils.fetchCities(mocType: .MainMOC)
+        self.favouriteCities = CoreDataUtils.sharedUtils.fetchCities(mocType: .mainMOC)
         DispatchQueue.main.asyncAfter(deadline: .now()+0.25) {
             self.citiesTableView.reloadData()
         }

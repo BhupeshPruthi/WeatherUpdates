@@ -8,29 +8,28 @@
 import Foundation
 import CoreData
 
-
 class CoreDataUtils {
     
-    var mainMoc : NSManagedObjectContext?
-    var privateMOC : NSManagedObjectContext?
+    var mainMoc: NSManagedObjectContext?
+    var privateMOC: NSManagedObjectContext?
     static let sharedUtils = CoreDataUtils()
     
+    // Setup inial core data settings
+    // Private context created but not used
+    // It can be used for up coming changes which include downloading data for all cities
     
-    //Setup inial core data settings
-    //Private context created but not used
-    //It can be used for up coming changes which include downloading data for all cities
-    func setUpCoreDataBase() -> Void {
+    func setUpCoreDataBase() {
         let momdURL = Bundle.main.url(forResource: "WeatherDataModel", withExtension: "momd")
         if let url = momdURL {
             let momd = NSManagedObjectModel(contentsOf: url)
             let storeCordinator = NSPersistentStoreCoordinator(managedObjectModel: momd!)
             
-            //Path for SQLight store
+            // Path for SQLight store
             let dirPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last
             let fileURL = URL(string: "WeatherDataModel.sql", relativeTo: dirPath)
             print("Core data file url:: \(String(describing: fileURL?.absoluteString))")
             do {
-                let options = [ NSMigratePersistentStoresAutomaticallyOption: true, NSInferMappingModelAutomaticallyOption:true ]
+                let options = [NSMigratePersistentStoresAutomaticallyOption: true, NSInferMappingModelAutomaticallyOption: true]
                 try storeCordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: fileURL, options: options)
             } catch {
                 print("!!!!!!!Core Data setup unsuccessfull with error:: \(error)")
@@ -43,20 +42,20 @@ class CoreDataUtils {
             privateMOC?.parent  = mainMoc
         }
     }
-    //Save City and weather information into DB
-    func saveCity(cityModel : CityModel , weatherModel : WeatherModel) {
+    // Save City and weather information into DB
+    func saveCity(cityModel: CityModel, weatherModel: WeatherModel) {
         if let mainMOC = mainMoc {
             mainMOC.performAndWait {
                 do {
                     let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "CityMO")
                     fetchRequest.predicate = NSPredicate(format: "cityId == %d", Int64(weatherModel.id))
                     
-                    var city : CityMO?
+                    var city: CityMO?
                     if let list = try mainMOC.fetch(fetchRequest) as? [CityMO], list.count > 0 {
                         city = list.first
                     } else {
                         city = CityMO(context: mainMOC)
-                        //City Details
+                        // City Details
                         city?.administrativeArea = cityModel.administrativeArea
                         city?.citySubTitle = cityModel.citySubTitle
                         city?.countryCode = cityModel.countryCode
@@ -68,7 +67,7 @@ class CoreDataUtils {
                     }
                     
                     let weather = WeatherMO(context: mainMOC)
-                    //Weather Details
+                    // Weather Details
                     weather.weatherDescription = weatherModel.weather.first?.description
                     weather.icon = weatherModel.weather.first?.icon
                     weather.temp = weatherModel.main.temp
@@ -97,10 +96,10 @@ class CoreDataUtils {
         }
     }
     
-    //Will fetch default city followed by favourites and the history
+    // Will fetch default city followed by favourites and the history
     func fetchCities(mocType: MOCType) -> [CityMO] {
-        var mocUsed : NSManagedObjectContext?
-        if mocType == MOCType.MainMOC {
+        var mocUsed: NSManagedObjectContext?
+        if mocType == MOCType.mainMOC {
             mocUsed = mainMoc
         } else {
             mocUsed = privateMOC
@@ -108,7 +107,9 @@ class CoreDataUtils {
         var cityArray = [CityMO]()
         if let moc = mocUsed {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "CityMO")
-            fetchRequest.sortDescriptors = [NSSortDescriptor.init(key: "isDefault", ascending: false) , NSSortDescriptor.init(key: "isFavourite", ascending: false) , NSSortDescriptor.init(key: "cityTitle", ascending: true)]
+            fetchRequest.sortDescriptors = [NSSortDescriptor.init(key: "isDefault", ascending: false),
+                                            NSSortDescriptor.init(key: "isFavourite", ascending: false) ,
+                                            NSSortDescriptor.init(key: "cityTitle", ascending: true)]
             
             mocUsed?.performAndWait {
                 do {
@@ -124,15 +125,15 @@ class CoreDataUtils {
         return cityArray
     }
     
-    //Fetch city for id
-    func fetchCityForId(id : Int) -> CityMO? {
-        var citySelected : CityMO?
+    // Fetch city for id
+    func fetchCityForId(id: Int) -> CityMO? {
+        var citySelected: CityMO?
         if let moc = mainMoc {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "CityMO")
             fetchRequest.predicate = NSPredicate(format: "cityId == %d", id)
             mainMoc?.performAndWait {
                 do {
-                    if let list = try moc.fetch(fetchRequest) as? [CityMO]  , list.count > 0 {
+                    if let list = try moc.fetch(fetchRequest) as? [CityMO], list.count > 0 {
                         citySelected = list.first
                     }
                 } catch {
@@ -144,14 +145,14 @@ class CoreDataUtils {
         return citySelected
     }
     
-    //Remove City for id
-    func RemoveCityForId(id : Int) {
+    // Remove City for id
+    func removeCityForId(id: Int) {
         if let moc = mainMoc {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "CityMO")
             fetchRequest.predicate = NSPredicate(format: "cityId == %d", id)
             moc.performAndWait {
                 do {
-                    if let list = try moc.fetch(fetchRequest) as? [CityMO] , list.count > 0 , let citySelected = list.first {
+                    if let list = try moc.fetch(fetchRequest) as? [CityMO], list.count > 0, let citySelected = list.first {
                         moc.delete(citySelected)
                     }
                 } catch {
@@ -161,11 +162,11 @@ class CoreDataUtils {
         }
     }
     
-    //Set new city as default city
-    func setDefaultCityForId(id : Int) {
+    // Set new city as default city
+    func setDefaultCityForId(id: Int) {
         if let moc = mainMoc {
             
-            //Only one city can be default
+            // Only one city can be default
             let fetchRequestForDefault = NSFetchRequest<NSFetchRequestResult>(entityName: "CityMO")
             mainMoc?.performAndWait {
                 do {
@@ -190,7 +191,7 @@ class CoreDataUtils {
             fetchRequest.predicate = NSPredicate(format: "cityId == %d", id)
             moc.performAndWait {
                 do {
-                    if let list = try moc.fetch(fetchRequest) as? [CityMO] , list.count > 0 , let citySelected = list.first {
+                    if let list = try moc.fetch(fetchRequest) as? [CityMO], list.count > 0, let citySelected = list.first {
                         citySelected.isDefault = true
                         do {
                             try moc.save()
@@ -205,7 +206,7 @@ class CoreDataUtils {
         }
     }
     
-    //Save main cotnext
+    // Save main cotnext
     func saveMainContext() {
         if let mainMoc = self.mainMoc {
             do {
@@ -218,6 +219,6 @@ class CoreDataUtils {
 }
 
 public enum MOCType {
-    case MainMOC
-    case PrivateMOC
+    case mainMOC
+    case privateMOC
 }

@@ -7,17 +7,17 @@
 
 import Foundation
 
-struct WeatherModel : Codable {
-    var coord : Coordinates
-    var weather : [Weather]
-    var visibility : Int
-    var wind : Wind
-    var dt : Int
-    var sunrise : Sunrise
-    var timezone : Int
-    var id : Int  //City Id
-    var name : String
-    var main : Main
+struct WeatherModel: Codable {
+    var coord: Coordinates
+    var weather: [Weather]
+    var visibility: Int
+    var wind: Wind
+    var dt: Int
+    var sunrise: Sunrise
+    var timezone: Int
+    var id: Int  // City Id
+    var name: String
+    var main: Main
     enum CodingKeys: String, CodingKey {
         case coord, weather
         case visibility, wind
@@ -27,28 +27,28 @@ struct WeatherModel : Codable {
     }
 }
 
-struct Coordinates : Codable {
-    var latitude : Double
-    var longitude : Double
+struct Coordinates: Codable {
+    var latitude: Double
+    var longitude: Double
     enum CodingKeys: String, CodingKey {
         case longitude = "lon"
         case latitude = "lat"
     }
 }
 
-struct Weather : Codable {
-    var id : Int
-    var description : String
-    var icon : String
+struct Weather: Codable {
+    var id: Int
+    var description: String
+    var icon: String
 }
 
-struct Main : Codable {
-    var temp : Double
-    var feelLike : Double
-    var tempMin : Double
-    var tempMax : Double
-    var pressure : Int
-    var humidity : Int
+struct Main: Codable {
+    var temp: Double
+    var feelLike: Double
+    var tempMin: Double
+    var tempMax: Double
+    var pressure: Int
+    var humidity: Int
 
     enum CodingKeys: String, CodingKey {
         case temp
@@ -60,16 +60,14 @@ struct Main : Codable {
     }
 }
 
-struct Wind : Codable {
-    var speed : Double
+struct Wind: Codable {
+    var speed: Double
 }
 
-struct Sunrise : Codable {
-    var sunrise : Int
-    var sunset : Int
+struct Sunrise: Codable {
+    var sunrise: Int
+    var sunset: Int
 }
-
-
 
  /*
  {

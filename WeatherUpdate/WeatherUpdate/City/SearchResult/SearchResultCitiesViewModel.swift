@@ -9,5 +9,5 @@ import Foundation
 import MapKit
 
 class SearchResultCitiesViewModel {
-    var cityList : Observable<[MKLocalSearchCompletion]>  = Observable([])
+    var cityList: Observable<[MKLocalSearchCompletion]>  = Observable([])
 }

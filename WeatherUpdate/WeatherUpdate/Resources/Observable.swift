@@ -14,11 +14,12 @@ class Observable<T> {
         }
     }
     
-    private var listener : ((T) -> Void)?
+    private var listener: ((T) -> Void)?
     
     init(_ value: T) {
         self.value = value
     }
+    
     func bind(_ clouser: @escaping (T) -> Void) {
         clouser(value)
         listener = clouser

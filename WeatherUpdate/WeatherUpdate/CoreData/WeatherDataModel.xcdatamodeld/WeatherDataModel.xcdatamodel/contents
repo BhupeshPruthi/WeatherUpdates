@@ -10,7 +10,7 @@
         <attribute name="isFavourite" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <relationship name="cityWeather" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WeatherMO"/>
+        <relationship name="cityWeather" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="WeatherMO" inverseName="toCity" inverseEntity="WeatherMO"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="cityId"/>
@@ -32,9 +32,10 @@
         <attribute name="visibility" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="weatherDescription" optional="YES" attributeType="String"/>
         <attribute name="windSpeed" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="toCity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CityMO" inverseName="cityWeather" inverseEntity="CityMO"/>
     </entity>
     <elements>
         <element name="CityMO" positionX="-369.82421875" positionY="-219.02734375" width="128" height="193"/>
-        <element name="WeatherMO" positionX="-63" positionY="36" width="128" height="253"/>
+        <element name="WeatherMO" positionX="-63" positionY="36" width="128" height="268"/>
     </elements>
 </model>

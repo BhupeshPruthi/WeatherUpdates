@@ -16,7 +16,7 @@ struct SessionManager<T: APIManager> {
         self.urlSession = urlSession
     }
     
-    func loadAPIRequest(requestData: T.RequestType, completionHandler: @escaping (T.ResponseType?, ServiceError?) -> ()) {
+    func loadAPIRequest(requestData: T.RequestType, completionHandler: @escaping (T.ResponseType?, ServiceError?) -> Void) {
         if let urlRequest = apiManager.requestBuilder(from: requestData) {
             print("***********Request Sent API ***********")
 
@@ -44,12 +44,12 @@ struct SessionManager<T: APIManager> {
                         let parsedResponse = try self.apiManager.responseBuilder(data: responseData, response: httpResponse)
                         completionHandler(parsedResponse, nil)
                     } catch {
-                        completionHandler(nil, ServiceError(httpStatus:  httpResponse.statusCode, message: "ServiceError : \(error.localizedDescription)"))
+                        completionHandler(nil, ServiceError(httpStatus: httpResponse.statusCode, message: "ServiceError : \(error.localizedDescription)"))
                     }
                     
                 } else {
                     if let message = error?.localizedDescription {
-                        completionHandler(nil, ServiceError(httpStatus:  -1009 , message: "\(message)"))
+                        completionHandler(nil, ServiceError(httpStatus: -1009, message: "\(message)"))
                     } else {
                         completionHandler(nil, ServiceError(httpStatus: -101, message: "ServiceError : Unknown Error"))
                     }

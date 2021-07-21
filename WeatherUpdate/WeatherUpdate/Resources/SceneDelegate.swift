@@ -11,7 +11,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
@@ -19,14 +18,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let _ = (scene as? UIWindowScene) else { return }
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         CoreDataUtils.sharedUtils.setUpCoreDataBase()
-        let cities = CoreDataUtils.sharedUtils.fetchCities(mocType: .MainMOC)
+        let cities = CoreDataUtils.sharedUtils.fetchCities(mocType: .mainMOC)
         if cities.count > 0 {
             print("*********** DB contains data ***********")
             let weatherHome = storyboard.instantiateViewController(withIdentifier: "WeatherHomePage") as! WeatherHomePageViewController
             let initalViewController = UINavigationController(rootViewController: weatherHome)
             var weatherVM = WeatherViewModel()
             if let cityMo = cities.first {
-                let cityModel = CityModel(citySubTitle: cityMo.citySubTitle ?? "", administrativeArea: cityMo.administrativeArea ?? "", countryCode: cityMo.countryCode ?? "", cityTitle: cityMo.cityTitle ?? "", latitude: cityMo.latitude, longitude: cityMo.longitude, id: cityMo.cityId, isFavourite: cityMo.isFavourite, isDefault: cityMo.isDefault)
+                var cityModel = CityModel(latitude: cityMo.latitude, longitude: cityMo.longitude, id: cityMo.cityId, isFavourite: cityMo.isFavourite, isDefault: cityMo.isDefault)
+                cityModel.citySubTitle = cityMo.citySubTitle ?? ""
+                cityModel.administrativeArea = cityMo.administrativeArea ?? ""
+                cityModel.countryCode = cityMo.countryCode ?? ""
+                cityModel.cityTitle = cityMo.cityTitle ?? ""
+
                 weatherVM.cityModel = cityModel
                 weatherHome.weatherVM = weatherVM
                 self.window?.rootViewController = initalViewController
@@ -68,6 +72,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
 
-
 }
-

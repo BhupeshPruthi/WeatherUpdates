@@ -14,7 +14,7 @@ import UIKit
 
  */
 
-class WeatherHomePageViewController: UIViewController , LocationSearchViewControllerDelegate {
+class WeatherHomePageViewController: UIViewController, LocationSearchViewControllerDelegate {
   
     @IBOutlet weak var navigationBarItem: UINavigationItem!
     @IBOutlet weak var searchRightBarItem: UIBarButtonItem!
@@ -29,7 +29,7 @@ class WeatherHomePageViewController: UIViewController , LocationSearchViewContro
     @IBOutlet weak var pressureLabel: UILabel!
     @IBOutlet weak var feelsLikeLabel: UILabel!
     
-    var weatherVM : WeatherViewModel?
+    var weatherVM: WeatherViewModel?
    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -41,10 +41,10 @@ class WeatherHomePageViewController: UIViewController , LocationSearchViewContro
                     self.setupUI(city: city)
                 }
                 
-                //In case API not responding, show the error
-                if let e = error {
+                // In case API not responding, show the error
+                if let err = error {
                     DispatchQueue.main.async {
-                        let alert = UIAlertController(title: "\(e.httpStatus)" , message: e.message, preferredStyle: .alert)
+                        let alert = UIAlertController(title: "\(err.httpStatus)", message: err.message, preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
                         self.present(alert, animated: true, completion: nil)
                         
@@ -57,7 +57,7 @@ class WeatherHomePageViewController: UIViewController , LocationSearchViewContro
     func setupUI(city: CityMO) {
         if let weather = city.cityWeather {
             if city.cityTitle == "My Location" {
-                self.cityLabel.text = String(format: "%@(%@)", (city.cityTitle) ?? "" , weather.cityName ?? "")
+                self.cityLabel.text = String(format: "%@(%@)", (city.cityTitle) ?? "", weather.cityName ?? "")
             } else {
                 self.cityLabel.text = city.cityTitle ?? ""
             }

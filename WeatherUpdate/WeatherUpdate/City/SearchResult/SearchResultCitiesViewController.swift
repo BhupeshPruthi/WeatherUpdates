@@ -9,9 +9,9 @@ import Foundation
 import UIKit
 import MapKit
 
-protocol SearchResultCitiesViewControllerDelegate {
-    func downloadLocalCityInformationCompleted(cityModel: CityModel)
-    func cancelSearchBar()
+protocol SearchResultCitiesViewControllerDelegate: class {
+    func collectedCityInformationFor(cityModel: CityModel)
+    func deactivateSearch()
 }
 
 class SearchResultCitiesViewController: UIViewController {
@@ -21,7 +21,7 @@ class SearchResultCitiesViewController: UIViewController {
     private let searchCompleter = MKLocalSearchCompleter()
     private var viewModel = SearchResultCitiesViewModel()
     
-    var resultCitiesDelegate : SearchResultCitiesViewControllerDelegate?
+    weak var resultCitiesDelegate: SearchResultCitiesViewControllerDelegate?
     
     override func viewDidLoad() {
         self.citySelectionTable.register(UINib(nibName: "CityItemTableCell", bundle: nil), forCellReuseIdentifier: "CityNameCard")
@@ -46,8 +46,8 @@ class SearchResultCitiesViewController: UIViewController {
 
 }
 
-//Extension to be used for getting the input string of UISearchBar
-extension SearchResultCitiesViewController : UISearchResultsUpdating , MKLocalSearchCompleterDelegate {
+// Extension to be used for getting the input string of UISearchBar
+extension SearchResultCitiesViewController: UISearchResultsUpdating, MKLocalSearchCompleterDelegate {
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchBarText = searchController.searchBar.text else { return }
         searchCompleter.delegate = self
@@ -65,7 +65,7 @@ extension SearchResultCitiesViewController : UISearchResultsUpdating , MKLocalSe
     }
 }
 
-extension SearchResultCitiesViewController : UITableViewDelegate, UITableViewDataSource {
+extension SearchResultCitiesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.viewModel.cityList.value.count
     }
@@ -83,18 +83,17 @@ extension SearchResultCitiesViewController : UITableViewDelegate, UITableViewDat
     }
 }
 
-
-extension SearchResultCitiesViewController : CityItemTableCellDelegate {
+extension SearchResultCitiesViewController: CityItemTableCellDelegate {
     
     func favouriteButtonAction(searchObj: MKLocalSearchCompletion) {
-        downloadLocalSearchDetailsFor(title: searchObj.title, subTitle: searchObj.subtitle , isFavourite: true)
+        downloadLocalSearchDetailsFor(title: searchObj.title, subTitle: searchObj.subtitle, isFavourite: true)
     }
     
-    //Download the lat and long for a given city name and city subtitle
-    //Pass lat and long to the WeatherViewModel for downloading the weather information
-    func downloadLocalSearchDetailsFor(title: String , subTitle: String, isFavourite: Bool) {
-        //Cancel search bar, let user see the current selection
-        self.resultCitiesDelegate?.cancelSearchBar()
+    // Download the lat and long for a given city name and city subtitle
+    // Pass lat and long to the WeatherViewModel for downloading the weather information
+    func downloadLocalSearchDetailsFor(title: String, subTitle: String, isFavourite: Bool) {
+        // Cancel search bar, let user see the current selection
+        self.resultCitiesDelegate?.deactivateSearch()
         
         let areaInfo = "\(title) , \(subTitle)"
         let searchRequest = MKLocalSearch.Request()
@@ -106,8 +105,13 @@ extension SearchResultCitiesViewController : CityItemTableCellDelegate {
                 return
             }
             if let item = response.mapItems.first {
-                let cityModel = CityModel(citySubTitle: subTitle, administrativeArea: item.placemark.administrativeArea ?? "", countryCode: item.placemark.countryCode ?? "", cityTitle: title, latitude: item.placemark.coordinate.latitude, longitude: item.placemark.coordinate.longitude, id: 0, isFavourite: isFavourite, isDefault: false)
-                self.resultCitiesDelegate?.downloadLocalCityInformationCompleted(cityModel: cityModel)
+                var cityModel = CityModel(latitude: item.placemark.coordinate.latitude, longitude: item.placemark.coordinate.longitude, id: 0, isFavourite: isFavourite, isDefault: false)
+                cityModel.citySubTitle = subTitle
+                cityModel.administrativeArea = item.placemark.administrativeArea ?? ""
+                cityModel.countryCode = item.placemark.countryCode ?? ""
+                cityModel.cityTitle = title
+                
+                self.resultCitiesDelegate?.collectedCityInformationFor(cityModel: cityModel)
             }
         }
     }

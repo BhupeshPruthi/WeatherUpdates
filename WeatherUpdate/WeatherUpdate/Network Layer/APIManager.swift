@@ -7,8 +7,7 @@
 
 import Foundation
 
-
-/**
+/*
  The class provide Generic way to handle request and response
  Any new EndPoint can extend this class and implement requestBuilder and responseBuilder
  */
@@ -16,11 +15,11 @@ import Foundation
 // MARK: - Request
 protocol RequestManager {
     associatedtype RequestType
-    func requestBuilder(from data:RequestType) -> URLRequest?
+    func requestBuilder(from data: RequestType) -> URLRequest?
 }
 
 extension RequestManager {
-    func setQueryParams(parameters:[String: Any], url: URL) -> URL {
+    func setQueryParams(parameters: [String: Any], url: URL) -> URL {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
         components?.queryItems = parameters.map { element in URLQueryItem(name: element.key, value: String(describing: element.value) ) }
         return components?.url ?? url
@@ -48,7 +47,7 @@ extension ResponseManager {
             } else {
                 throw ServiceError(httpStatus: response.statusCode, message: "Unknown Error")
             }
-        } catch  {
+        } catch {
             throw ServiceError(httpStatus: response.statusCode, message: error.localizedDescription)
         }
     }

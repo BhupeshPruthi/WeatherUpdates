@@ -8,7 +8,7 @@
 import Foundation
 
 final class URLConfigurationProvider {
-    
+
     lazy var baseURL: String = {
         guard let apiBaseURL = Bundle.main.object(forInfoDictionaryKey: "OpenWeatherBaseURL") as? String else {
             fatalError("base url can not be nil")
@@ -24,14 +24,13 @@ final class URLConfigurationProvider {
     }()
 }
 
-
 // API Headers
 struct APIHeaders {
     static var kContentType = "Content-Type"
     static var contentTypeValue = "application/json"
 }
 
-struct ServiceError: Error,Codable {
+struct ServiceError: Error, Codable {
     let httpStatus: Int
     let message: String
 }
