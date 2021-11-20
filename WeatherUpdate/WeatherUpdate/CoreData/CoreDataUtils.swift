@@ -9,7 +9,7 @@ import Foundation
 import CoreData
 
 class CoreDataUtils {
-    
+    //Changes
     var mainMoc: NSManagedObjectContext?
     var privateMOC: NSManagedObjectContext?
     static let sharedUtils = CoreDataUtils()
