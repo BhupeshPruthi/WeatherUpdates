@@ -10,6 +10,7 @@ import CoreData
 
 class CoreDataUtils {
     //Changes
+    //Second changes
     var mainMoc: NSManagedObjectContext?
     var privateMOC: NSManagedObjectContext?
     static let sharedUtils = CoreDataUtils()
